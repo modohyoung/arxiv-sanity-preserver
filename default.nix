@@ -1,9 +1,8 @@
-{ pkgs, mkDerivation }:
+{ pkgs, buildPythonPackage }:
 
-#with import <nixpkgs> {};
 with pkgs;
 
-let Flask = buildPythonPackage rec {
+rec { Flask = buildPythonPackage rec {
       name = "Flask-0.10.1";
       src = pkgs.fetchurl {
         url = "https://pypi.python.org/packages/source/F/Flask/${name}.tar.gz";
@@ -40,25 +39,17 @@ let Flask = buildPythonPackage rec {
                               ]; 
       meta = {
       };
-    };
-in mkDerivation {
-     name = "arxiv-sanity";
-     version = "1.0";
-     src = builtins.filterSource (path: type: baseNameOf path != ".git") ./.;
-     isExecutable = true;
-     isLibrary = true;
-     buildInputs = [
-       #python27Packages.python
-       #python
-       python27Packages.feedparser
-       python27Packages.numpy
-       python27Packages.scipy
-       python27Packages.scikitlearn
-       python27Packages.dateutil
-       #python27Packages.flask
-       Flask
-       Flask-Limiter
-       python27Packages.tornado
-     ];
-     license = null;
-   }
+   };
+}
+
+
+
+#buildPythonPackage rec { 
+#     name = "arxiv-sanity";
+#     version = "1.0";
+#     src = builtins.filterSource (path: type: baseNameOf path != ".git") ./.;
+#     isExecutable = true;
+#     isLibrary = true;
+#     buildInputs = with pkgs.python27Packages; [ feedparser numpy scipy scikitlearn dateutil flask Flask-Limiter tornado ];
+#     license = null;
+#}
